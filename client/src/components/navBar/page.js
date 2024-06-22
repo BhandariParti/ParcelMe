@@ -1,15 +1,16 @@
 "use client";
 import React from 'react';
 import {Navbar, Button, NavbarBrand, NavbarContent, NavbarItem, link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
-import dynamic from "next/dynamic";
+import Image from 'next/image'
 import Link from 'next/link'
+
 const page =()=>{ 
   return (
     <Navbar isBordered>
     <NavbarContent justify="start">
       <NavbarBrand className="mr-4">
       <div>
-      <image src="/parcellogo.jpg" width="40" height="38"></image>
+      <Image src="/parcellogo.jpg" width={39} height={39} alt="picture"></Image>
       </div>
       <p className="hidden sm:block font-bold text-inherit">Parcel App</p>
       </NavbarBrand>
@@ -33,8 +34,8 @@ const page =()=>{
     </NavbarContent>
 
     <NavbarContent as="div" className="items-center" justify="end">
-      <button>Log In</button>
-      <a href="/register" > Register </a>
+      <Button>Log In</Button>
+      <Button as={Link} href="/register"> Register</Button>
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
           <Avatar
