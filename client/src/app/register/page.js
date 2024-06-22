@@ -2,14 +2,14 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import {Input} from "@nextui-org/react";
+import {Input, Button} from "@nextui-org/react";
 import Layout from '@/components/layout/page'
 import styles from './styles.module.css'
 import {  toast } from 'react-toastify';
-
 import { useRouter } from 'next/navigation';
-const router = useRouter()
+
 const SignupForm = () => {
+  const router = useRouter()
     const SignupSchema = Yup.object().shape({
         firstName: Yup.string()
           .min(2, 'Too Short!')
@@ -19,7 +19,8 @@ const SignupForm = () => {
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
           .required('Required'),
-        email: Yup.string().email('Invalid email').required('Required')
+        
+        email: Yup.string().email('Invalid email').required('Required'),
       });
       
       const registerUser =async(values)=>{
@@ -48,8 +49,8 @@ const SignupForm = () => {
   });
   return (
     <Layout>
-      <form className={styles.formfeild} onSubmit={formik.handleSubmit}>
-      <label htmlFor="phoneNumber">phoneNumber</label>
+      <form className={styles.formfields} onSubmit={formik.handleSubmit}>
+        <h1>Register</h1>
       <Input 
         id="phoneNumber"
         name="phoneNumber"
@@ -57,8 +58,7 @@ const SignupForm = () => {
         onChange={formik.handleChange}
         value={formik.values.phoneNumber}
         label="phoneNumber" />
-      
-      <label htmlFor="email">Email</label>
+      {formik?.errors.phoneNumber}
       <Input
         id="email"
         name="email"
@@ -68,8 +68,8 @@ const SignupForm = () => {
         label="email"
       />
       {formik?.errors.email}
-      <br/>
-      <label htmlFor="password">Password</label>
+      
+      
       <Input
         id="password"
         name="password"
@@ -78,7 +78,7 @@ const SignupForm = () => {
         value={formik.values.password}
         label="password"
       />
-      <label htmlFor="role">Role</label>
+      
       <Input
         id="role"
         name="role"
@@ -87,7 +87,7 @@ const SignupForm = () => {
         value={formik.values.role}
         label="role"
       />
-      <button type="submit">Submit</button>
+      <Button type="submit">Submit</Button>
     </form>
     </Layout>
     

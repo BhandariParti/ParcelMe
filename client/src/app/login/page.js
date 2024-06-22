@@ -1,10 +1,71 @@
-import React from 'react'
+'use client'
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import {Input,Button} from "@nextui-org/react";
 
-const page = ()=>{
-    return(
-        <div>
-            login
-        </div>
-    )
-}
-export default page
+import {  toast } from 'react-toastify';
+import Layout from '@/components/layout/page'
+import { useRouter } from 'next/navigation'
+
+const SignInForm = () => {
+  const router = useRouter()
+  
+   const SignInSchema = Yup.object().shape({
+   phoneNumber: Yup.string().required('Required'),
+ });
+ 
+ const loginUser = async(values)=> {
+  const res=  await fetch(`/api/login`,{
+    method: 'POST',
+    headers: {'Content-Type':'application/json' },
+    body: JSON.stringify(values)
+  })
+  const data = await res.json()
+
+  if(res.status == 200) {
+    dispatch(addUserDetails(data))
+    if(data?.userDetails.role === 'rider') return router.push('rider-dashboard')
+    router.push('/home')
+  } else {
+    toast(data.msg)
+  }
+ }
+  const formik = useFormik({
+    initialValues: {
+      phoneNumber: '',
+      password: '',
+    },
+    validationSchema:SignInSchema,
+    onSubmit: values => {
+      loginUser(values)
+    },
+  });
+
+  return (
+    <Layout>
+    <form  className='p-24' onSubmit={formik.handleSubmit}>
+      <h2>Sign In</h2>
+      <Input 
+       id="phoneNumber"
+       label="phoneNumber"
+       name="phoneNumber"
+       type="text"
+       onChange={formik.handleChange}
+       value={formik.values.phoneNumber}
+      />
+        {formik?.errors.phoneNumber}
+         <Input 
+       id="password"
+       name="password"
+       type="password"
+       onChange={formik.handleChange}
+       value={formik.values.password}
+      label="password" />
+      <Button type="submit">Submit</Button>
+    </form>
+  </Layout>
+  );
+};
+
+export default SignInForm
