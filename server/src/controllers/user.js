@@ -11,14 +11,18 @@ const registerNewUser = async(req,res)=>{
         }
         const hashPass = await bcrypt.hash(req.body.password, saltRounds )
         console.log(hashPass)
-           // await User.create(req.body)
-           // res.json({
-           // msg: "registered successfully"
-           //})
+            await User.create(req.body)
+            res.json({
+            msg: "registered successfully"
+           })
         
 }catch(err){
     console.log(err)
 }
+}
+const getAllUsers = async(req,res)=>{
+    const data= await User.find()
+    res.json({data})
 }
 const loginUser = async(req,res)=>{
     try{
@@ -46,4 +50,4 @@ const loginUser = async(req,res)=>{
     console.log(err)
 }
 }
-module.exports= {registerNewUser,loginUser}
+module.exports= {registerNewUser,loginUser,getAllUsers}
