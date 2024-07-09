@@ -9,8 +9,9 @@ import {  toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
 const SignupForm = () => {
-  const router = useRouter()
-    const SignupSchema = Yup.object().shape({
+  const router = useRouter();
+
+     const SignupSchema = Yup.object().shape({
         firstName: Yup.string()
           .min(2, 'Too Short!')
           .max(50, 'Too Long!')
