@@ -3,23 +3,20 @@ import React from 'react';
 import {Navbar, Button, NavbarBrand, NavbarContent, NavbarItem, link, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import Image from 'next/image'
 import Link from 'next/link'
+import  {useSelector, useDispatch}  from "react-redux";
 
-const page =()=>{ 
-  return (
-    <Navbar isBordered>
-    <NavbarContent justify="start">
-      <NavbarBrand className="mr-4">
-      <div>
-      <Image src="/parcellogo.jpg" width={39} height={39} alt="picture"></Image>
-      </div>
-      <p className="hidden sm:block font-bold text-inherit">Parcel App</p>
-      </NavbarBrand>
-      
-    </NavbarContent>
-
-    <NavbarContent as="div" className="items-center" justify="end">
-    <Button as={Link} href="/login"> Login</Button>
-      <Button as={Link} href="/register"> Register</Button>
+import {logout} from '@/redux/reducerSlice/userSlice';
+import { useRouter } from 'next/navigation';
+const page=()=> { 
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const {isLoggedIn}= useSelector(state=>state.user)
+  const handelLogout = () =>{
+    dispatch(logout())
+    router.push('/')
+  }
+  const LoggedInDrop = ()=>{
+    return(
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
           <Avatar
@@ -43,13 +40,38 @@ const page =()=>{
           <DropdownItem key="system">System</DropdownItem>
           <DropdownItem key="configurations">Configurations</DropdownItem>
           <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-          <DropdownItem key="logout" color="danger">
+          <DropdownItem onClick={handelLogout} key="logout" color="danger">
             Log Out
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
+    )
+  }
+  const AuthButton =()=>{
+    return(
+      <>
+      <Button as={Link} href="/login"> Login</Button>
+      <Button as={Link} href="/register"> Register</Button>
+      </>
+    )
+  }
+  return (
+    <Navbar isBordered>
+    <NavbarContent justify="start">
+      <NavbarBrand className="mr-4">
+      <div>
+      <Image src="/parcellogo.jpg" width={39} height={39} alt="picture"></Image>
+      </div>
+      <p className="hidden sm:block font-bold text-inherit">Parcel App</p>
+      </NavbarBrand>
+      
+    </NavbarContent>
+
+    <NavbarContent as="div" className="items-center" justify="end">
+      {isLoggedIn ?  <LoggedInDrop/> : <AuthButton/>} 
+    
     </NavbarContent>
   </Navbar>
-  )
+  );
 }
 export default page

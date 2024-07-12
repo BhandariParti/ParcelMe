@@ -27,7 +27,7 @@ const SignInForm = () => {
 
   if(res.status == 200) {
     dispatch(addUserDetails(data))
-    router.push('/login')
+    router.push('/home')
   } 
     toast(data.msg)
   

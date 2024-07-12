@@ -1,6 +1,9 @@
+'use client'
 const User = require('../models/user')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+
 const registerNewUser = async(req,res)=>{
     try{
         const existingUser = await User.findOne({phoneNumber: req.body.phoneNumber})
@@ -31,8 +34,10 @@ const loginUser = async(req,res)=>{
         if(userDetails){
             const match = await bcrypt.compare(req.body.password, userDetails.password);
             if(match){
+                const token = jwt.sign({ phoneNumber: req.body.phoneNumber }, '3ff389373984aed2fe10f6708d52df49548e45646bc350dc8b630ad90ca96b925205debdb4688e148c10b7ce8751c84d5de441b56304fdce3a60809f7d8010ec');
                 res.json({
-                    msg: 'Login sucess'
+                    msg: 'Login sucess',
+                    token,
                 })
             }else{
                 res.status(403).json({
